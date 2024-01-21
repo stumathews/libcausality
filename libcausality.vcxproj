@@ -71,9 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\repos\libmonad\lib;$(IncludePath)</IncludePath>
+    <IncludePath>C:\repos\libmonad\lib;c:\repos\cppgamelib\;C:\SDL\SDL2\include;C:\SDL\SDL2_image-2.0.4\include;C:\SDL\SDL2_ttf-2.0.15\include;c:\repos\expectationlib\Src\CppLibExpectation;C:\repos\2DGameDev\2DGameDevLib;c:\repos\tglib\tglib_cpp\src\;$(IncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>c:\repos\cppgamelib\$(platform)\$(configuration);C:\SDL\SDL2\lib\$(platform);C:\SDL\SDL2_image-2.0.4\lib\$(platform);C:\SDL\SDL2_ttf-2.0.15\lib\$(platform);c:\repos\expectationlib\Src\ExpectationLib\$(platform)\$(configuration);C:\repos\2DGameDev\2DGameDevLib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,6 +126,9 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>CppGameLib.lib;2DGameDevLib.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -145,9 +150,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EventTap.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Snapshot.h" />
     <ClInclude Include="src\CausalityTracker.h" />
+    <ClInclude Include="src\ItemsOverTime.h" />
+    <ClInclude Include="src\ToolWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -156,8 +165,20 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\CausalityTracker.cpp" />
+    <ClCompile Include="src\EventTap.cpp" />
+    <ClCompile Include="src\ItemsOverTime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\2DGameDev\2DGameDevLib\2DGameDevLib.vcxproj">
+      <Project>{825d337d-0f78-428c-9590-fdb39f79c6e9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\cppgamelib\cppgamelib.vcxproj">
+      <Project>{478a3ef4-5780-4567-be58-56beccd9d215}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\expectationlib\Src\CppLibExpectation\CppLibExpectation.vcxproj">
+      <Project>{8521a984-c70c-47b2-b24a-451d8a747f64}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\libmonad\lib\lib.vcxproj">
       <Project>{a63d4542-48ca-4d12-acae-f35a729c40d0}</Project>
     </ProjectReference>

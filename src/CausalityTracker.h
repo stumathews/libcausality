@@ -1,12 +1,16 @@
 ﻿#pragma once
+#include <map>
 #include <memory>
 #include <string>
 #include <unordered_map>
+
 #include "ContactCircumstanceBuilder.h"
-#include "IParty.h"
+#include "ItemsOverTime.h"
+#include "Option.h"
 #include "Party.h"
 #include "events/Event.h"
-#include "Option.h"
+#include "utils/Utils.h"
+#include "Snapshot.h"
 
 namespace libcausality
 {
@@ -14,55 +18,32 @@ namespace libcausality
 	class CausalityTracker
 	{
 		public:
-		std::shared_ptr<ExpectationLib::ICircumstance> TrackEvent(const std::shared_ptr<gamelib::Event>& event,
-		                                                          const std::string& to)
-		{
-			auto& senderId = event->Origin;
-			auto receiverId = to;			
 
-			if(!parties.contains(senderId))
-			{
-				parties.insert({{senderId, std::make_shared<ExpectationLib::Party>(senderId)}});
-			}
+		std::shared_ptr<ExpectationLib::ICircumstance> TrackEvent(const std::shared_ptr<gamelib::Event>& event, const std::string& to, const unsigned long elapsedTimeMs);
 
-			if(!parties.contains(receiverId))
-			{
-				parties.insert({{receiverId, std::make_shared<ExpectationLib::Party>(receiverId)}});
-			}
-
-			// establish the circumstance
-			const auto sender = parties[senderId];
-			const auto receiver = parties[receiverId];
-			auto circumstance = ExpectationLib::ContactCircumstanceBuilder::Build(sender, receiver);
-
-			// keep a copy of the encountered circumstances as the a history of circumstances
-			history.insert(history.end(), circumstance);
-
-			// Always keep the latest state of any parties involved in the experienced circumstance
-			parties[senderId] = circumstance->GetResponse()->GetSender();
-			parties[receiverId] = circumstance->GetResponse()->GetReceiver();			
-
-			return circumstance;
-		}
-
-		std::unordered_map<std::string, std::shared_ptr<ExpectationLib::IParty>>& GetParties()
-		{
-			return parties;
-		}
-
-		libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> GetParty(const std::string& partyId)
-		{
-			if(!parties.contains(partyId)) 
-			{
-				return libmonad::None();
-			}
-
-			return parties[partyId];
-		}
-		
+		[[nodiscard]] std::unordered_map<std::string, std::shared_ptr<ExpectationLib::IParty>> GetParties() const;
+		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> GetParty(const std::string& partyId) const;
 
 	private:
-		std::unordered_map<std::string, std::shared_ptr<ExpectationLib::IParty>> parties;
-		std::list<std::shared_ptr<ExpectationLib::ICircumstance>> history;
+
+		
+		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> FindParty(
+			const std::string& partyId) const;
+
+		void InsertPartySnapshot(
+			const std::string& partyId, const Snapshot<std::shared_ptr<ExpectationLib::IParty>>& snapshot);
+
+		void ReplacePartySnapshot(
+			const std::shared_ptr<ExpectationLib::IParty>& found, const std::string& senderId,
+			const Snapshot<std::shared_ptr<ExpectationLib::IParty>>& snapshot);
+
+		std::shared_ptr<ExpectationLib::IParty> AddOrUpdatePartySnapshot(
+			unsigned long elapsedTime, const std::string& partyId,
+			const std::shared_ptr<ExpectationLib::IParty>& item);
+		std::shared_ptr<ExpectationLib::IParty> UpdateParty(unsigned long elapsedTimeMs, std::string senderId);
+
+		std::unordered_map<std::string, Snapshot<std::shared_ptr<ExpectationLib::IParty>>> parties;
+		ItemsOverTime<std::shared_ptr<ExpectationLib::ICircumstance>> circumstancesHistory;
+		ItemsOverTime<std::shared_ptr<ExpectationLib::IParty>> partyHistory;
 	};
 }
