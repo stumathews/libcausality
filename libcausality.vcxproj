@@ -167,7 +167,6 @@
     </ClCompile>
     <ClCompile Include="src\CausalityTracker.cpp" />
     <ClCompile Include="src\EventTap.cpp" />
-    <ClCompile Include="src\ItemsOverTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\2DGameDev\2DGameDevLib\2DGameDevLib.vcxproj">

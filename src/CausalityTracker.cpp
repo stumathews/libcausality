@@ -51,7 +51,7 @@ namespace libcausality
 		return item;
 	}
 
-	shared_ptr<IParty> CausalityTracker::UpdateParty(const unsigned long elapsedTimeMs, const string senderId)
+	shared_ptr<IParty> CausalityTracker::UpdateParty(const unsigned long elapsedTimeMs, const string& senderId)
 	{
 		return FindParty(senderId).WhenNone([=, this]
 		{
