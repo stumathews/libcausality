@@ -13,13 +13,13 @@ namespace libcausality
 		auto& receiverId = to;			
 		
 		// Get the sender and the receiver and update their states
-		const auto& sender = UpdateParty(elapsedTimeMs, senderId);						
-		const auto& receiver = UpdateParty(elapsedTimeMs, receiverId);
+		const auto& sender = UpdateParty(senderId, elapsedTimeMs);						
+		const auto& receiver = UpdateParty(receiverId, elapsedTimeMs);
 
-		// establish the circumstance (sender -[stimulus:contact]-> receiver : result)
+		// Trigger the circumstance (sender -[stimulus:contact]-> receiver : result)
 		auto circumstance = ContactCircumstanceBuilder::Build(sender, receiver, event->Id.Name);
 		
-		// Always keep the latest state of any parties involved in the experienced circumstance
+		// Always keep the latest state of any parties after they experience the circumstance
 		AddOrUpdatePartySnapshot(elapsedTimeMs, senderId, circumstance->GetResponse()->GetSender());
 		AddOrUpdatePartySnapshot(elapsedTimeMs, receiverId, circumstance->GetResponse()->GetReceiver());
 				
@@ -51,7 +51,7 @@ namespace libcausality
 		return item;
 	}
 
-	shared_ptr<IParty> CausalityTracker::UpdateParty(const unsigned long elapsedTimeMs, const string& senderId)
+	shared_ptr<IParty> CausalityTracker::UpdateParty(const string& senderId, const unsigned long elapsedTimeMs)
 	{
 		return FindParty(senderId).WhenNone([=, this]
 		{

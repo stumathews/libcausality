@@ -40,7 +40,7 @@ namespace libcausality
 		std::shared_ptr<ExpectationLib::IParty> AddOrUpdatePartySnapshot(
 			unsigned long elapsedTime, const std::string& partyId,
 			const std::shared_ptr<ExpectationLib::IParty>& item);
-		std::shared_ptr<ExpectationLib::IParty> UpdateParty(unsigned long elapsedTimeMs, const std::string& senderId);
+		std::shared_ptr<ExpectationLib::IParty> UpdateParty(const std::string& senderId, unsigned long elapsedTimeMs);
 
 		std::unordered_map<std::string, Snapshot<std::shared_ptr<ExpectationLib::IParty>>> parties;
 		ItemsOverTime<std::shared_ptr<ExpectationLib::ICircumstance>> circumstancesHistory;

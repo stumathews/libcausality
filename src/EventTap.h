@@ -23,6 +23,6 @@ namespace libcausality
 		unsigned long elapsedTimeMs;
 
 	public:
-		void Tap(const std::shared_ptr<gamelib::Event>& evt, const std::string& subscriber, unsigned long deltaMs);
+		void Tap(const std::shared_ptr<gamelib::Event>& evt, const std::string& to, unsigned long elapsedTimeMs);
 	};
 }

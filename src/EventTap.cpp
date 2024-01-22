@@ -23,9 +23,12 @@ namespace libcausality
 	{
 	}
 
-	void EventTap::Tap(const std::shared_ptr<gamelib::Event>& evt, const std::string& to, const unsigned long elapsedTime)
+	void EventTap::Tap(const std::shared_ptr<gamelib::Event>& evt, const std::string& to, const unsigned long elapsedTimeMs)
 	{
-		CausalityTracker.TrackEvent(evt, to, elapsedTime);
+		this->elapsedTimeMs = elapsedTimeMs;
+
+		CausalityTracker.TrackEvent(evt, to, elapsedTimeMs);
+
 		//tglib::minimum_duration_path();
 		//tglib::earliest_arrival_path()
 	}
