@@ -26,8 +26,8 @@ TEST(CausalityTracker, TrackSingleEvent)
 
 	tracker.TrackEvent(fromEvent, party2->GetId(), 0);
 
-	EXPECT_FALSE(tracker.GetParties().empty());
-	EXPECT_EQ(tracker.GetParties().size(), 2);
+	EXPECT_FALSE(tracker.GetLatestParties().empty());
+	EXPECT_EQ(tracker.GetLatestParties().size(), 2);
 }
 
 TEST(CausalityTracker, TrackMultipleEvent)
@@ -47,8 +47,8 @@ TEST(CausalityTracker, TrackMultipleEvent)
 	tracker.TrackEvent(fromEvent, party2->GetId(),0 );
 	tracker.TrackEvent(fromEvent, party3->GetId(), 0);
 
-	EXPECT_FALSE(tracker.GetParties().empty());
-	EXPECT_EQ(tracker.GetParties().size(), 3);
+	EXPECT_FALSE(tracker.GetLatestParties().empty());
+	EXPECT_EQ(tracker.GetLatestParties().size(), 3);
 	
 }
 
@@ -70,13 +70,13 @@ TEST(CausalityTracker, DuplicatePartiesIgnored)
 	tracker.TrackEvent(fromEvent, party3->GetId(), 0);
 	tracker.TrackEvent(fromEvent, party3->GetId(), 0);
 
-	EXPECT_FALSE(tracker.GetParties().empty());
-	EXPECT_EQ(tracker.GetParties().size(), 3); // party 1, 2, 3
+	EXPECT_FALSE(tracker.GetLatestParties().empty());
+	EXPECT_EQ(tracker.GetLatestParties().size(), 3); // party 1, 2, 3
 
-	auto result1 = tracker.GetParty(party1->GetId());
-	auto result2 = tracker.GetParty(party2->GetId());
-	auto result3 = tracker.GetParty(party3->GetId());
-	auto result4 = tracker.GetParty("unknownParty"); // should not be able to find untracked party
+	auto result1 = tracker.GetLatestParty(party1->GetId());
+	auto result2 = tracker.GetLatestParty(party2->GetId());
+	auto result3 = tracker.GetLatestParty(party3->GetId());
+	auto result4 = tracker.GetLatestParty("unknownParty"); // should not be able to find untracked party
 
 	EXPECT_TRUE(result1.IsSome());
 	EXPECT_TRUE(result2.IsSome());

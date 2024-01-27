@@ -21,8 +21,8 @@ namespace libcausality
 
 		std::shared_ptr<ExpectationLib::ICircumstance> TrackEvent(const std::shared_ptr<gamelib::Event>& event, const std::string& to, const unsigned long elapsedTimeMs);
 
-		[[nodiscard]] std::unordered_map<std::string, std::shared_ptr<ExpectationLib::IParty>> GetParties();
-		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> GetParty(const std::string& partyId);
+		[[nodiscard]] std::unordered_map<std::string, std::shared_ptr<ExpectationLib::IParty>> GetLatestParties();
+		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> GetLatestParty(const std::string& partyId);
 
 	private:
 		

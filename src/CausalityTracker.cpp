@@ -17,7 +17,7 @@ namespace libcausality
 		const auto& receiver = GetLatestPartyOrAdd(receiverId, elapsedTimeMs);
 
 		// Trigger the circumstance (sender -[stimulus:contact]-> receiver : result)
-		auto circumstance = ContactCircumstanceBuilder::Build(sender, receiver, event->Id.Name);
+		auto circumstance = ContactCircumstanceBuilder::Build(sender, receiver, event->Id.Name, elapsedTimeMs);
 
 		// Add the result/change to the party history
 		partyHistory.Add(circumstance->GetResponse()->GetSender(), senderId, elapsedTimeMs);
@@ -40,7 +40,7 @@ namespace libcausality
 		});
 	}
 
-	unordered_map<string, shared_ptr<IParty>> CausalityTracker::GetParties()
+	unordered_map<string, shared_ptr<IParty>> CausalityTracker::GetLatestParties()
 	{
 		unordered_map<string, shared_ptr<IParty>> allParties;
 
@@ -62,5 +62,5 @@ namespace libcausality
 		});
 	}
 
-	Option<shared_ptr<IParty>> CausalityTracker::GetParty(const string& partyId) { return FindLatestParty(partyId); }
+	Option<shared_ptr<IParty>> CausalityTracker::GetLatestParty(const string& partyId) { return FindLatestParty(partyId); }
 }
