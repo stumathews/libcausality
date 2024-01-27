@@ -10,11 +10,14 @@ namespace libcausality
 		{
 			// Note I think we are copying the item, which makes sense if we are making a snapshot
 		}
+
+		Snapshot(){}
+
 		[[nodiscard]] T Item() const { return item; }
 		[[nodiscard]] unsigned long DeltaMs() const { return deltaMs; }
 		Snapshot& operator=(const Snapshot &other) { return *this;}
 	private:
 		T item;
-		const unsigned long deltaMs;
+		unsigned long deltaMs;
 	};
 }

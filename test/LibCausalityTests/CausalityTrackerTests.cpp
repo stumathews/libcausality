@@ -29,6 +29,7 @@ TEST(CausalityTracker, TrackSingleEvent)
 	EXPECT_FALSE(tracker.GetParties().empty());
 	EXPECT_EQ(tracker.GetParties().size(), 2);
 }
+
 TEST(CausalityTracker, TrackMultipleEvent)
 {
 	

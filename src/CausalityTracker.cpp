@@ -18,68 +18,48 @@ namespace libcausality
 
 		// Trigger the circumstance (sender -[stimulus:contact]-> receiver : result)
 		auto circumstance = ContactCircumstanceBuilder::Build(sender, receiver, event->Id.Name);
-		
-		// Always keep the latest state of any parties after they experience the circumstance
-		AddOrUpdatePartySnapshot(elapsedTimeMs, senderId, circumstance->GetResponse()->GetSender());
-		AddOrUpdatePartySnapshot(elapsedTimeMs, receiverId, circumstance->GetResponse()->GetReceiver());
-				
+						
 		// keep a copy of the encountered circumstances as the a history of circumstances
 		circumstancesHistory.Add(elapsedTimeMs, circumstance, circumstance->GetId());
 
 		return circumstance;
 	}
-		
-	void CausalityTracker::InsertPartySnapshot(const string& partyId, const Snapshot<shared_ptr<IParty>>& snapshot)
-	{
-		parties.insert(unordered_map<string, Snapshot<shared_ptr<IParty>>>::value_type(partyId, snapshot));
-	}
-
-	void CausalityTracker:: ReplacePartySnapshot(const shared_ptr<IParty>& found, const string& senderId, const Snapshot<shared_ptr<IParty>>& snapshot)
-	{
-		parties.erase(found->GetId());
-	    InsertPartySnapshot(senderId, snapshot);
-	}
-
-	shared_ptr<IParty> CausalityTracker::AddOrUpdatePartySnapshot(const unsigned long elapsedTime, const string& partyId, const shared_ptr<IParty>& item)
-	{		
-		FindParty(partyId).Match(
-			[&](None){ InsertPartySnapshot(partyId, Snapshot(item, elapsedTime));}, 
-			[&](const shared_ptr<IParty>& found) { ReplacePartySnapshot(found, partyId, Snapshot(item, elapsedTime)); });
-
-		partyHistory.Add(elapsedTime, item, item->GetId());
-
-		return item;
-	}
-
+	
 	shared_ptr<IParty> CausalityTracker::UpdateParty(const string& senderId, const unsigned long elapsedTimeMs)
 	{
 		return FindParty(senderId).WhenNone([=, this]
 		{
 			// Make new party
 			const auto& newParty = To<IParty>(make_shared<Party>(senderId));
-			return AddOrUpdatePartySnapshot(elapsedTimeMs, senderId, newParty);
+			partyHistory.Add(elapsedTimeMs, newParty, senderId);
+			return newParty;
 		});
 	}
 
-	unordered_map<string, shared_ptr<IParty>> CausalityTracker::GetParties() const
+	unordered_map<string, shared_ptr<IParty>> CausalityTracker::GetParties()
 	{
 		unordered_map<string, shared_ptr<IParty>> allParties;
 
-		for (const auto& [partyId, partySnapshot] : parties)
+		for (const auto& itemSnapshot : partyHistory.GetAllLatestItems())
 		{
-			allParties.insert(allParties.end(), {partyId, partySnapshot.Item()});
+			auto party = itemSnapshot.Item();
+			allParties.insert(allParties.end(), {party->GetId(), party});
 		}
 		return allParties;
 	}
 
-	Option<shared_ptr<IParty>> CausalityTracker::FindParty(const string& partyId) const
+	Option<shared_ptr<IParty>> CausalityTracker::FindParty(const string& partyId)
 	{
-		const auto findResult = parties.find(partyId);
-		return findResult == parties.end()? libmonad::Option<shared_ptr<IParty>>(None()): findResult->second.Item();
+		return partyHistory
+		.GetLatestItemByKey(partyId)
+		.Map<shared_ptr<IParty>>([](const Snapshot<shared_ptr<IParty>>& item)
+		{
+			return item.Item();
+		});
 	}
 
-	Option<shared_ptr<IParty>> CausalityTracker::GetParty(const string& partyId) const
+	Option<shared_ptr<IParty>> CausalityTracker::GetParty(const string& partyId)
 	{
-		return parties.contains(partyId) ? FindParty(partyId) : None();
+		return FindParty(partyId);
 	}
 }
