@@ -12,19 +12,20 @@ namespace libcausality
 	class ItemsOverTime 
 	{
 	public:
-		void Add(const T& item, libmonad::Option<std::string> itemKey, unsigned long elapsedTimeMs)
+		void Add(const T& item, std::string itemKey, unsigned long elapsedTimeMs)
 		{
 			auto snapShot = Snapshot(item, elapsedTimeMs);
 			Add(snapShot, itemKey);
 		}
 
-		void Add(Snapshot<T> itemSnapshot, libmonad::Option<std::string> itemKey)
+		void Add(Snapshot<T> itemSnapshot, std::string itemKey)
 		{
 			auto elapsedTimeMs = itemSnapshot.DeltaMs();
-			auto key = itemKey.WhenNone([]{ return "NoItemKey";});
 
-			itemsByTime[elapsedTimeMs][key].push_back(itemSnapshot);
-			timesByKey[key][elapsedTimeMs].push_back(itemSnapshot);
+			itemsByTime[elapsedTimeMs][itemKey].push_back(itemSnapshot);
+			timesByKey[itemKey][elapsedTimeMs].push_back(itemSnapshot);
+
+			if(!itemNumbers.contains(itemKey)) itemNumbers[itemKey] = lastItemNumber++;
 		}
 
 		std::map<unsigned long, std::list<Snapshot<T>>>& GetItemsOverTime() { return itemsByTime;}
@@ -72,9 +73,30 @@ namespace libcausality
 			timesByKey.clear();
 		}
 
+		int Exchange(const std::string itemKey)
+		{
+			if(!itemNumbers.contains(itemKey)) itemNumbers[itemKey] = lastItemNumber++;
+			return itemNumbers[itemKey];
+		}
+
+		libmonad::Option<std::string> Exchange(const unsigned int itemNumber)
+		{
+			for(auto& [candidateItemKey, candidateItemNumber] : itemNumbers)
+			{
+				if(candidateItemNumber == itemNumber) return candidateItemKey;
+			}
+
+			return libmonad::None();
+		}
+
 	private:
 
 		std::map<unsigned long, std::map<std::string, std::list<Snapshot<T>>>> itemsByTime;
 		std::map<std::string, std::map<unsigned long, std::list<Snapshot<T>>>> timesByKey;
+		std::map<std::string, unsigned int> itemNumbers;
+		static unsigned int lastItemNumber;
 	};
+
+	template <typename T>
+	unsigned int ItemsOverTime<T>::lastItemNumber = 0;
 }

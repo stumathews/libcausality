@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CausalityTracker.h"
+#include "Party.h"
 #include "events/EventNumbers.h"
 
 using namespace gamelib;

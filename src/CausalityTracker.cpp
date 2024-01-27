@@ -1,4 +1,6 @@
 ﻿#include "CausalityTracker.h"
+#include <ranges>
+#include "Party.h"
 
 using namespace libmonad;
 using namespace gamelib;
@@ -62,5 +64,37 @@ namespace libcausality
 		});
 	}
 
+	int CausalityTracker::Exchange(const std::string& itemKey){ return partyHistory.Exchange(itemKey); }
+	Option<std::string> CausalityTracker::Exchange(const int itemNumber){ return partyHistory.Exchange(itemNumber);}
+
 	Option<shared_ptr<IParty>> CausalityTracker::GetLatestParty(const string& partyId) { return FindLatestParty(partyId); }
+
+	void AddEdge(std::vector<tglib::TemporalEdge> &edges, const tglib::NodeId u, const tglib::NodeId v, const tglib::Time t, const tglib::Time tt)
+	{
+	    edges.push_back(tglib::TemporalEdge{u, v, t, tt});
+	}
+
+	tglib::IncidentLists<tglib::TGNode, tglib::TemporalEdge> CausalityTracker::GenerateTemporalNetwork()
+	{
+		std::map<int, int> nodeFrequencies;
+		auto currentParties = GetLatestParties();
+
+		std::vector<tglib::TemporalEdge> edges;
+		for(const auto& party : currentParties | std::views::values)
+		{
+			for(auto& relation : party->GetRelations())
+			{
+				const auto startTime = relation.StartTime.WhenNone([]{ return 1;});
+				const auto endTime = relation.EndTime.WhenNone([]{ return 1;});
+				const auto u =  Exchange(party->GetId());
+				const auto v = Exchange(relation.To->GetId());
+				nodeFrequencies[u]++;
+				nodeFrequencies[v]++;
+				AddEdge(edges,u, v, startTime, endTime);
+			}
+		}
+		const auto countNodes = static_cast<int>(nodeFrequencies.size());
+		tglib::IncidentLists<tglib::TGNode, tglib::TemporalEdge> edgeList(countNodes, edges);
+		return edgeList;
+	}
 }

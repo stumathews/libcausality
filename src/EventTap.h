@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <vector>
 #include "events/EventSubscriber.h"
 #include "CausalityTracker.h"
 

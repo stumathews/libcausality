@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\repos\libmonad\lib;c:\repos\cppgamelib\;C:\SDL\SDL2\include;C:\SDL\SDL2_image-2.0.4\include;C:\SDL\SDL2_ttf-2.0.15\include;c:\repos\expectationlib\Src\CppLibExpectation;C:\repos\2DGameDev\2DGameDevLib;c:\repos\tglib\tglib_cpp\src\;$(IncludePath)</IncludePath>
+    <IncludePath>C:\repos\libmonad\lib;c:\repos\cppgamelib\;C:\SDL\SDL2\include;C:\SDL\SDL2_image-2.0.4\include;C:\SDL\SDL2_ttf-2.0.15\include;c:\repos\tglib\tglib_cpp\src\;c:\repos\expectationlib\Src\CppLibExpectation;C:\repos\2DGameDev\2DGameDevLib;$(IncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>c:\repos\cppgamelib\$(platform)\$(configuration);C:\SDL\SDL2\lib\$(platform);C:\SDL\SDL2_image-2.0.4\lib\$(platform);C:\SDL\SDL2_ttf-2.0.15\lib\$(platform);c:\repos\expectationlib\Src\ExpectationLib\$(platform)\$(configuration);C:\repos\2DGameDev\2DGameDevLib\$(Configuration);$(LibraryPath)</LibraryPath>
