@@ -17,7 +17,7 @@ namespace libcausality
 	// Tracks causal events
 	class CausalityTracker
 	{
-		public:
+	public:
 
 		std::shared_ptr<ExpectationLib::ICircumstance> TrackEvent(const std::shared_ptr<gamelib::Event>& event, const std::string& to, const unsigned long elapsedTimeMs);
 
@@ -26,10 +26,9 @@ namespace libcausality
 
 	private:
 		
-		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> FindParty(
-			const std::string& partyId);
+		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> FindLatestParty(const std::string& partyId);
 
-		std::shared_ptr<ExpectationLib::IParty> UpdateParty(const std::string& senderId, unsigned long elapsedTimeMs);
+		std::shared_ptr<ExpectationLib::IParty> GetLatestPartyOrAdd(const std::string& senderId, unsigned long elapsedTimeMs);
 		
 		ItemsOverTime<std::shared_ptr<ExpectationLib::ICircumstance>> circumstancesHistory;
 		ItemsOverTime<std::shared_ptr<ExpectationLib::IParty>> partyHistory;

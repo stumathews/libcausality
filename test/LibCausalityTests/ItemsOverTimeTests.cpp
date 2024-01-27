@@ -9,10 +9,10 @@ TEST(ItemsOverTime, GetLatestItemByKey)
 {
 	ItemsOverTime<char> charactersOverTime;
 
-	charactersOverTime.Add(1, 'a', ToOption<std::string>("a"));
-	charactersOverTime.Add(2, 'b', ToOption<std::string>("b"));
-	charactersOverTime.Add(3, 'c', ToOption<std::string>("c"));	
-	charactersOverTime.Add(5, 'a', ToOption<std::string>("a"));
+	charactersOverTime.Add( 'a', ToOption<std::string>("a"), 1);
+	charactersOverTime.Add( 'b', ToOption<std::string>("b"), 2);
+	charactersOverTime.Add('c', ToOption<std::string>("c"), 3);	
+	charactersOverTime.Add('a', ToOption<std::string>("a"), 5);
 
 	charactersOverTime.GetLatestItemByKey("a").Match([](None){ FAIL(); }, [](const Snapshot<char> some)
 	{
@@ -30,14 +30,14 @@ TEST(ItemsOverTime, GetLatestItemByKey)
 TEST(ItemsOverTime, GetAllLatestItems)
 {
 	ItemsOverTime<char> charactersOverTime;
-	charactersOverTime.Add(1, 'a', ToOption<std::string>("a"));
-	charactersOverTime.Add(2, 'b', ToOption<std::string>("b"));
-	charactersOverTime.Add(3, 'c', ToOption<std::string>("c"));	
-	charactersOverTime.Add(5, 'a', ToOption<std::string>("a"));
-	charactersOverTime.Add(5, 'b', ToOption<std::string>("b"));
-	charactersOverTime.Add(5, 'c', ToOption<std::string>("c"));
-	charactersOverTime.Add(6, 'c', ToOption<std::string>("c"));
-	charactersOverTime.Add(1, '1', ToOption<std::string>("1"));
+	charactersOverTime.Add( 'a', ToOption<std::string>("a"),1);
+	charactersOverTime.Add( 'b', ToOption<std::string>("b"), 2);
+	charactersOverTime.Add( 'c', ToOption<std::string>("c"), 3);	
+	charactersOverTime.Add( 'a', ToOption<std::string>("a"), 5);
+	charactersOverTime.Add( 'b', ToOption<std::string>("b"), 5);
+	charactersOverTime.Add( 'c', ToOption<std::string>("c"), 5);
+	charactersOverTime.Add( 'c', ToOption<std::string>("c"), 6);
+	charactersOverTime.Add( '1', ToOption<std::string>("1"), 1);
 
 	auto items = charactersOverTime.GetAllLatestItems();
 	EXPECT_EQ(items.size(), 4);
@@ -55,6 +55,23 @@ TEST(ItemsOverTime, GetAllLatestItems)
 	EXPECT_EQ((*a).DeltaMs(), 5);
 	EXPECT_EQ((*b).DeltaMs(), 5);
 	EXPECT_EQ((*c).DeltaMs(), 6);
-	EXPECT_EQ((*one).DeltaMs(), 1);
+	EXPECT_EQ((*one).DeltaMs(), 1);		
+}
+
+TEST(ItemsOverTime, Purge)
+{
+	ItemsOverTime<char> charactersOverTime;
+	charactersOverTime.Add( 'a', ToOption<std::string>("a"),1);
+	charactersOverTime.Add( 'b', ToOption<std::string>("b"), 2);
+	charactersOverTime.Add( 'c', ToOption<std::string>("c"), 3);	
+	charactersOverTime.Add( 'a', ToOption<std::string>("a"), 5);
+	charactersOverTime.Add( 'b', ToOption<std::string>("b"), 5);
+	charactersOverTime.Add( 'c', ToOption<std::string>("c"), 5);
+	charactersOverTime.Add( 'c', ToOption<std::string>("c"), 6);
+	charactersOverTime.Add( '1', ToOption<std::string>("1"), 1);
 	
+	EXPECT_EQ(charactersOverTime.GetAllLatestItems().size(), 4);
+	charactersOverTime.Purge();
+	EXPECT_EQ(charactersOverTime.GetAllLatestItems().size(), 0);
+
 }

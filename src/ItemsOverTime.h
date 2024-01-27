@@ -12,7 +12,7 @@ namespace libcausality
 	class ItemsOverTime 
 	{
 	public:
-		void Add(unsigned long elapsedTimeMs, const T& item, libmonad::Option<std::string> itemKey)
+		void Add(const T& item, libmonad::Option<std::string> itemKey, unsigned long elapsedTimeMs)
 		{
 			auto snapShot = Snapshot(item, elapsedTimeMs);
 			Add(snapShot, itemKey);
@@ -64,6 +64,12 @@ namespace libcausality
 			
 			auto& latestTime = timesByKey[itemKey].rbegin()->first;
 			return *itemsByTime[latestTime][itemKey].rbegin();
+		}
+
+		void Purge()
+		{
+			itemsByTime.clear();
+			timesByKey.clear();
 		}
 
 	private:
