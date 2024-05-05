@@ -41,6 +41,7 @@ namespace libcausality
 
 		const auto latestCausalRelations = CausalityTracker.GenerateTemporalNetwork();
 		auto earliestArrivalPath = earliest_arrival_path(latestCausalRelations, 0, 3,latestCausalRelations.getTimeInterval());
+
 	}
 
 	EventTap* EventTap::instance = nullptr;

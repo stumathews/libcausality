@@ -26,6 +26,7 @@ namespace libcausality
 
 		int Exchange(const std::string& itemKey);
 		libmonad::Option<std::string> Exchange(int itemNumber);
+
 	private:
 		
 		[[nodiscard]] libmonad::Option<std::shared_ptr<ExpectationLib::IParty>> FindLatestParty(const std::string& partyId);
