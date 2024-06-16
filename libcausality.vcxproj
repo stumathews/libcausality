@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
+	<Import Project="$(SolutionDir)Build\common.targets"/>
+	<ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -71,11 +72,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\repos\libmonad\lib;c:\repos\cppgamelib\;C:\SDL\SDL2\include;C:\SDL\SDL2_image-2.0.4\include;C:\SDL\SDL2_ttf-2.0.15\include;c:\repos\tglib\tglib_cpp\src\;c:\repos\expectationlib\Src\CppLibExpectation;C:\repos\2DGameDev\2DGameDevLib;$(IncludePath)</IncludePath>
+    <IncludePath>$(CommonIncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>c:\repos\cppgamelib\$(platform)\$(configuration);C:\SDL\SDL2\lib\$(platform);C:\SDL\SDL2_image-2.0.4\lib\$(platform);C:\SDL\SDL2_ttf-2.0.15\lib\$(platform);c:\repos\expectationlib\Src\ExpectationLib\$(platform)\$(configuration);C:\repos\2DGameDev\2DGameDevLib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(CommonLibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <IncludePath>$(CommonIncludePath)</IncludePath>
+	  <LibraryPath>$(CommonLibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,8 +145,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
