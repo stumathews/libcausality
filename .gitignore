@@ -10,6 +10,8 @@
 *.userosscache
 *.sln.docstates
 
+vcpkg_installer/*
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
