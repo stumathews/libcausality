@@ -131,10 +131,10 @@
     <ClCompile Include="TemporalGraphTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\cppgamelib\cppgamelib.vcxproj">
+    <ProjectReference Include="$(GameLib_RootDir)\cppgamelib.vcxproj">
       <Project>{478a3ef4-5780-4567-be58-56beccd9d215}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\expectationlib\Src\CppLibExpectation\CppLibExpectation.vcxproj">
+    <ProjectReference Include="$(LibExpectation_SrcDir)\CppLibExpectation.vcxproj">
       <Project>{8521a984-c70c-47b2-b24a-451d8a747f64}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\libmonad\lib\lib.vcxproj">

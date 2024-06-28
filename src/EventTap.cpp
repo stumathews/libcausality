@@ -4,9 +4,6 @@
 #include <algorithms/TemporalPaths.h>
 
 
-#include "GameDataManager.h"
-#include "Player.h"
-
 
 using namespace tglib;
 namespace libcausality
