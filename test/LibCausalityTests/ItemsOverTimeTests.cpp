@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
 
+#include <gtest/gtest.h>
+
 #include "ItemsOverTime.h"
 
 using namespace libcausality;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(SolutionDir)Build\common.targets"/>
-	<ItemGroup Label="ProjectConfigurations">
+  <Import Project="$(SolutionDir)Build\common.targets" Condition="Exists('$(SolutionDir)Build\common.targets')" />
+  <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -77,12 +77,17 @@
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(CommonLibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-	  <IncludePath>$(CommonIncludePath)</IncludePath>
-	  <LibraryPath>$(CommonLibraryPath)</LibraryPath>
+    <IncludePath>$(CommonIncludePath)</IncludePath>
+    <LibraryPath>$(CommonLibraryPath)</LibraryPath>
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -134,7 +139,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>CppGameLib.lib;2DGameDevLib.lib</AdditionalDependencies>
+      <AdditionalDependencies>CppGameLib.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,12 +182,6 @@
     <ClCompile Include="src\EventTap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\2DGameDev\2DGameDevLib\2DGameDevLib.vcxproj">
-      <Project>{825d337d-0f78-428c-9590-fdb39f79c6e9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\cppgamelib\cppgamelib.vcxproj">
-      <Project>{478a3ef4-5780-4567-be58-56beccd9d215}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\expectationlib\Src\CppLibExpectation\CppLibExpectation.vcxproj">
       <Project>{8521a984-c70c-47b2-b24a-451d8a747f64}</Project>
     </ProjectReference>

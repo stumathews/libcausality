@@ -1,5 +1,7 @@
 #include "pch.h"
+
 #include <gtest/gtest.h>
+
 #include "algorithms/TemporalPaths.h"
 #include "core/Transformations.h"
 

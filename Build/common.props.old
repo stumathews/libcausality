@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmls="https//schemas.micorsoft.com/develop/msbuild/2003">
+	
+	<PropertyGroup>
+		<ReposRoot>C:\repos</ReposRoot>
+	</PropertyGroup>
+	
+	<!--GameLib -->
+	<PropertyGroup>
+		<GameLib_RootDir>$(ReposRoot)\cppgamelib</GameLib_RootDir>
+		<GameLib_IncludeDir>$(GameLib_RootDir)</GameLib_IncludeDir>
+		<GameLib_SrcDir>$(GameLib_RootDir)</GameLib_SrcDir>
+		<GameLib_BinDir>$(GameLib_SrcDir)\$(Platform)\$(Configuration)</GameLib_BinDir>
+		<GameLib_OutputDir>$(GameLib_BinDir)</GameLib_OutputDir>
+		<!-- Tests -->
+		<GameLibTests_RootDir>$(GameLib_RootDir)\Tests\Tests\</GameLibTests_RootDir>
+		<GameLibTests_BinDir>$(GameLibTests_RootDir)\$(Platform)\$(Configuration)</GameLibTests_BinDir>
+		<GameLibTests_OutputDir>$(GameDev_BinDir)</GameLibTests_OutputDir>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<tglib_RootDir>$(ReposRoot)\tglib</tglib_RootDir>
+		<tglib_IncludeDir>$(tglib_RootDir)\tglib_cpp\src</tglib_IncludeDir>
+	</PropertyGroup>
+
+	<!--CppLibExpectation -->
+	<PropertyGroup>
+		<LibExpectation_RootDir>$(ReposRoot)\expectationlib</LibExpectation_RootDir>
+		<LibExpectation_SrcDir>$(LibExpectation_RootDir)\Src\CppLibExpectation</LibExpectation_SrcDir>
+		<LibExpectation_IncludeDir>$(LibExpectation_RootDir)\Src\CppLibExpectation</LibExpectation_IncludeDir>
+		<LibExpectation_OutputDir>$(GameDev_BinDir)</LibExpectation_OutputDir>
+		<LibExpectationTests_RootDir>$(LibExpectation_RootDir)\Tests\CppUnitTests</LibExpectationTests_RootDir>
+		<LibExpectationTests_BinDir>$(LibExpectationTests_RootDir)\$(Platform)\$(Configuration)\</LibExpectationTests_BinDir>
+		<LibExpectationTests_OutputDir>$(GameDev_BinDir)</LibExpectationTests_OutputDir>
+	</PropertyGroup>
+
+	<!-- Libmonad -->
+	<PropertyGroup>
+		<LibMonad_RootDir>$(ReposRoot)\libmonad</LibMonad_RootDir>
+		<LibMonad_LibDir>$(LibMonad_RootDir)\lib</LibMonad_LibDir>
+		<LibMonad_SrcDir>$(LibMonad_LibDir)</LibMonad_SrcDir>
+		<LibMonad_IncludeDir>$(LibMonad_LibDir)</LibMonad_IncludeDir>
+		<LibMonad_BinDir>$(LibMonad_LibDir)\$(Platform)\$(Configuration)</LibMonad_BinDir>
+		<LibMonadTests_RootDir>$(LibMonad_RootDir)\Tests</LibMonadTests_RootDir>
+		<LibMonadTests_BinDir>$(LibMonadTests_RootDir)\$(Platform)\$(Configuration)</LibMonadTests_BinDir>
+	</PropertyGroup>
+
+	<!--LibCausality -->
+	<PropertyGroup>
+		<LibCausality_RootDir>$(ReposRoot)\libcausality</LibCausality_RootDir>
+		<LibCausality_SrcDir>$(LibCausality_RootDir)\src</LibCausality_SrcDir>
+		<LibCausality_IncludeDir>$(LibCausality_RootDir)\src</LibCausality_IncludeDir>
+		<LibCausality_OutputDir>$(GameDev_BinDir)</LibCausality_OutputDir>
+		<LibCausalityTests_RootDir>$(LibCausality_SrcDir)\tests\LibCausalityTests</LibCausalityTests_RootDir>
+		<LibCausalityTests_BinDir>$(LibCausality_SrcDir)\tests\LibCausalityTests\$(Platform)\$(Configuration)</LibCausalityTests_BinDir>
+		<LibCausalityTests_OutputDir>$(GameDev_BinDir)</LibCausalityTests_OutputDir>
+		<LibCausality_LibDir>$(LibCausality_RootDir)\lib</LibCausality_LibDir>
+		<LibCausality_BinDir>$(LibCausality_RootDir)\$(Platform)\$(Configuration)</LibCausality_BinDir>
+		<LibCausality_ArtifactName>libcausality.lib</LibCausality_ArtifactName>
+		<LibCausality_ArtifactPath>$(LibCausality_BinDir)\$(LibCausality_ArtifactName)</LibCausality_ArtifactPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<CommonIncludePath>$(LibCausality_IncludeDir);$(tglib_IncludeDir);$(GameLib_IncludeDir);$(LibExpectation_IncludeDir);$(LibMonad_IncludeDir)</CommonIncludePath>
+		<CommonLibraryPath>$(GameLib_BinDir);$(LibCausality_BinDir);$(LibMonad_BinDir)</CommonLibraryPath>
+	</PropertyGroup>
+</Project>

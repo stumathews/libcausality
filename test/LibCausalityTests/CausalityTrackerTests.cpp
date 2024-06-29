@@ -1,10 +1,14 @@
 #include "pch.h"
+
+#include <gtest/gtest.h>
+
 #include "CausalityTracker.h"
 #include "Party.h"
 #include "events/EventNumbers.h"
 
 using namespace gamelib;
 using namespace ExpectationLib;
+using namespace libcausality;
 
 TEST(CausalityTracker, InstantiateWorks)
 {
