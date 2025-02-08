@@ -22,8 +22,8 @@ namespace libcausality
 		auto circumstance = ContactCircumstanceBuilder::Build(sender, receiver, event->Id.Name, elapsedTimeMs);
 
 		// Add the result/change to the party history
-		partyHistory.Add(circumstance->GetResponse()->GetSender(), senderId, elapsedTimeMs);
-		partyHistory.Add(circumstance->GetResponse()->GetReceiver(), receiverId, elapsedTimeMs);
+		partyHistory.Add(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetSender(), senderId, elapsedTimeMs);
+		partyHistory.Add(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetReceiver(), receiverId, elapsedTimeMs);
 						
 		// keep a copy of the encountered circumstances as the a history of circumstances
 		circumstancesHistory.Add(circumstance, circumstance->GetId(), elapsedTimeMs);
